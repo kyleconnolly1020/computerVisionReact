@@ -4,8 +4,8 @@ from waitress import serve
 import cv2
 import numpy as np
 
-application = Flask(__name__)
-CORS(application)
+app = Flask(__name__)
+CORS(app)
 
 cap = cv2.VideoCapture(0)
 
@@ -20,11 +20,11 @@ def gen_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-@application.route('/video_feed')
+@app.route('/video_feed')
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@application.route('/capture')
+@app.route('/capture')
 def getGolors(): 
     _, frame = cap.read()
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -70,4 +70,4 @@ def getGolors():
     
 
 if __name__ == "__main__":
-    serve(application, host='0.0.0.0', port=5000) #WAITRESS!
+    serve(app, host='0.0.0.0', port=5000) #WAITRESS!
