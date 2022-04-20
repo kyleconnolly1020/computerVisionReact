@@ -1,5 +1,6 @@
 from flask import Flask, Response
 from flask_cors import CORS
+from waitress import serve
 import cv2
 import numpy as np
 
@@ -69,4 +70,6 @@ def getGolors():
     
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True)
+    #Waitress server
+    serve(app, host='0.0.0.0', port=5000, threads=2) #WAITRESS!
